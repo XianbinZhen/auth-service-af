@@ -1,5 +1,6 @@
 package com.revature.auth.controllers;
 
+import com.revature.auth.aspects.Authorized;
 import com.revature.auth.entities.User;
 import com.revature.auth.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class AuthorizationController {
     @Autowired
     UserService userService;
 
+//    @Authorized
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user){
         user = userService.register(user);
