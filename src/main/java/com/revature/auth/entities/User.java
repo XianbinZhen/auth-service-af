@@ -1,5 +1,7 @@
 package com.revature.auth.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,6 +16,7 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    //@JsonIgnore
     @Column(name = "pswrd")
     private String password;
 
