@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findUserByUsernameAndPassword() {
+    public User findUserByUsernameAndPassword(String username, String password) {
         return null;
     }
 }

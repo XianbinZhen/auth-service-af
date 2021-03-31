@@ -18,6 +18,6 @@ public interface UserService {
     public User setPassword(User user);
     public User setPasswordById(int userId, String password);
 
-    public User findUserByUsernameAndPassword();
+    public User findUserByUsernameAndPassword(String username, String password);
 
 }
