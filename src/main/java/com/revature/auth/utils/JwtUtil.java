@@ -18,7 +18,6 @@ public class JwtUtil {
     }
 
     public static DecodedJWT isValidJWT(String jwt) {
-
         return JWT.require(ALGORITHM).build().verify(jwt);
     }
 }

@@ -81,13 +81,13 @@ public class UserServiceImpl implements UserService{
     @Override
     public User setPassword(User user, String password) {
         Optional<User> op = userRepo.findById(user.getUserId());
-        if (op.isPresent()) {
-            User user1 = op.get();
-            user1.setPassword(password);
-            userRepo.save(user1);
-            return user1;
-        }
-        return null;
+        if (!op.isPresent()) throw new IllegalArgumentException("user not found");
+
+        User user1 = op.get();
+        user1.setPassword(HashUtil.hash(password));
+
+        userRepo.save(user1);
+        return user1;
     }
 
     @Override
