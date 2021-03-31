@@ -2,6 +2,7 @@ package com.revature.auth.aspects;
 
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.revature.auth.exceptions.UnauthorizedException;
+import org.apache.log4j.Logger;
 import org.aspectj.lang.annotation.Aspect;
 import org.hibernate.exception.ConstraintViolationException;
 import org.postgresql.util.PSQLException;
@@ -21,6 +22,10 @@ import java.util.NoSuchElementException;
 @Aspect
 @RestControllerAdvice
 public class ExceptionAspect {
+
+    private static Logger logger = Logger.getLogger(LoggingAspect.class);
+
+
     @ExceptionHandler({NoSuchElementException.class})
     public ResponseEntity<String> handleEntityNotFound(NoSuchElementException e){
         return error(HttpStatus.NOT_FOUND, e);
@@ -66,7 +71,7 @@ public class ExceptionAspect {
 //    }
 
     private ResponseEntity<String> error(HttpStatus status, Exception e){
-        // TODO add logger here
+        logger.error("Exception: ", e);
         return ResponseEntity.status(status).body(e.getMessage());
     }
 }
