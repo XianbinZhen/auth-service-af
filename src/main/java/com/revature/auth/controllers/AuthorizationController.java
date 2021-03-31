@@ -1,5 +1,6 @@
 package com.revature.auth.controllers;
 
+import com.revature.auth.aspects.Authorized;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.revature.auth.entities.User;
@@ -28,6 +29,7 @@ public class AuthorizationController {
     @Autowired
     UserService userService;
 
+//    @Authorized
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user){
         user = userService.register(user);
