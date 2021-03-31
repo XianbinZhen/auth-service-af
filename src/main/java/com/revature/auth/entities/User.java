@@ -17,9 +17,11 @@ public class User {
     @Column(name = "pswrd")
     private String password;
 
+    //ENUMS, Maybe?
     @Column(name = "status")
     private String status;
 
+    //ENUMS, Maybe?
     @Column(name = "role")
     private String role;
 

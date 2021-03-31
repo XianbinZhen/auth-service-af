@@ -15,7 +15,7 @@ public interface UserService {
     public User denyUser(User user);
     public User denyUserById(int userId);
 
-    public User setPassword(User user);
+    public User setPassword(User user, String password);
     public User setPasswordById(int userId, String password);
 
     public User findUserByUsernameAndPassword(String username, String password);

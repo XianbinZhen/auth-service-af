@@ -13,10 +13,11 @@ public class HashTest {
         Assertions.assertNotNull(hash_text);
         Assertions.assertNotEquals(text, hash_text);
 
-        String text2 = "Goodbye, world.";
+        String text2 = "password";
         String hash_text2 = HashUtil.hash(text2);
         Assertions.assertNotEquals(hash_text, hash_text2);
 
         System.out.println(hash_text);
+        System.out.println(hash_text2);
     }
 }
