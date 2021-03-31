@@ -3,6 +3,7 @@ package com.revature.auth.aspects;
 import com.revature.auth.exceptions.UnauthorizedException;
 import com.revature.auth.services.UserService;
 import com.revature.auth.utils.JwtUtil;
+import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -19,7 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 @Aspect
-public class SecuriyAspect {
+public class SecurityAspect {
+
+    private static Logger logger = Logger.getLogger(LoggingAspect.class);
 
     @Autowired
     UserService us;
@@ -30,6 +33,7 @@ public class SecuriyAspect {
         String auth = request.getHeader("Authorization");
         System.out.println(auth);
         if (auth == null){
+            logger.error("Admin not logged in to perform action.");
             throw new UnauthorizedException("Please check if logged in.");
         }
 
@@ -42,7 +46,7 @@ public class SecuriyAspect {
             Object obj = pjp.proceed();
             return obj;
         }
-
+        logger.error("Admin not logged in to perform action.");
         throw new UnauthorizedException("Please check if logged in.");
 
     }
