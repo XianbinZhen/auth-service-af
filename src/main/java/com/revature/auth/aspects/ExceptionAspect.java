@@ -1,5 +1,6 @@
 package com.revature.auth.aspects;
 
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.revature.auth.exceptions.UnauthorizedException;
 import org.aspectj.lang.annotation.Aspect;
 import org.hibernate.exception.ConstraintViolationException;
@@ -47,6 +48,11 @@ public class ExceptionAspect {
 
     @ExceptionHandler({UnauthorizedException.class})
     public ResponseEntity<String> handleUnauthorizedException(UnauthorizedException e){
+        return error(HttpStatus.UNAUTHORIZED, e);
+    }
+
+    @ExceptionHandler({SignatureVerificationException.class})
+    public ResponseEntity<String> handleSignatureVerificationException(SignatureVerificationException e){
         return error(HttpStatus.UNAUTHORIZED, e);
     }
 
