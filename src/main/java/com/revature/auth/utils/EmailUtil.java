@@ -18,8 +18,6 @@ public class EmailUtil {
     private static String server = "smtp.gmail.com";
 
     public static boolean notifyUser(UserDTO userDTO, String url){
-        System.out.println(email);
-        System.out.println(password);
 
         Properties properties = new Properties();
         properties.put("mail.transport.protocol", "smtp");
@@ -46,7 +44,6 @@ public class EmailUtil {
             return true;
 
         }catch (MessagingException e) {
-            e.printStackTrace();
             return false;
 
         }
@@ -82,7 +79,6 @@ public class EmailUtil {
             return true;
 
         }catch (MessagingException e) {
-            e.printStackTrace();
             return false;
 
         }
