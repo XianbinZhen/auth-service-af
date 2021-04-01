@@ -22,8 +22,6 @@ import java.util.Set;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 
-
-// TODO UserServiceTest tests need to be created & implemented.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 @Transactional

@@ -106,7 +106,6 @@ public class UserServiceImpl implements UserService{
     public User findUserByUsernameAndPassword(String username, String password) {
 //        Optional<User> op = userRepo.findByEmail(username);
         User user = userRepo.findByEmail(username);
-        System.out.println(HashUtil.hash(password));
         if (HashUtil.hash(password).equals(user.getPassword())) {
             return user;
         }
