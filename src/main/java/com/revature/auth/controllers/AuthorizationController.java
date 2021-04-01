@@ -8,6 +8,8 @@ import com.revature.auth.dtos.DecodedJwtDTO;
 import com.revature.auth.dtos.UserDTO;
 import com.revature.auth.entities.User;
 import com.revature.auth.services.UserService;
+import com.revature.auth.utils.DtoUtil;
+import com.revature.auth.utils.EmailUtil;
 import com.revature.auth.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,37 +33,45 @@ public class AuthorizationController {
     @Autowired
     UserService userService;
 
-//    @Authorized
     @PostMapping("/register")
     public ResponseEntity<UserDTO> registerUser(@RequestBody User user){
         UserDTO userDTO = new UserDTO(userService.register(user));
+
+        Set<UserDTO> adminDTOs = DtoUtil.usersToDTOs(userService.getUsersByRole("admin"));
+        EmailUtil.notifyAdmins(adminDTOs);
+
         return ResponseEntity.status(201).body(userDTO);
     }
+
+    @Authorized
     @GetMapping("/resolve")
     public ResponseEntity<Set<UserDTO>> getPendingUsers(){
-        Set<UserDTO> userDTOS = new HashSet<>();
-        Set<User> users = userService.getUsersByStatus("pending");
-        for (User u : users) {
-            userDTOS.add(new UserDTO(u));
-        }
+        Set<UserDTO> userDTOS = DtoUtil.usersToDTOs(userService.getUsersByStatus("pending"));
         return ResponseEntity.status(200).body(userDTOS);
     }
+
+    @Authorized
     @PatchMapping("/resolve/{userId}")
     public ResponseEntity<UserDTO> updateStatusById(@RequestBody User user,@PathVariable int userId){
+        UserDTO userDTO = new UserDTO(userService.getUserById(userId));
         String status = user.getStatus();
         switch (status){
             case "denied":
                 return ResponseEntity.status(200).body(new UserDTO(userService.denyUserById(userId)));
             case "approved":
+                String jwt = JwtUtil.generate(user.getEmail(), user.getRole(), user.getUserId());
+                EmailUtil.notifyUser(userDTO, "https://assignforce.revature.com/password?id="+jwt);
                 return ResponseEntity.status(200).body(new UserDTO(userService.approveUserById(userId)));
             default:
                 throw new IllegalArgumentException("status not found");
         }
     }
+
     @PatchMapping("/password")
     public ResponseEntity<UserDTO> setPassword(@RequestBody User user){
         return ResponseEntity.status(200).body(new UserDTO(userService.setPassword(user,user.getPassword())));
     }
+
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User user){
         if(!(user==null)){
@@ -71,6 +81,7 @@ public class AuthorizationController {
         }
         return ResponseEntity.status(403).body("incorrect credentials");
     }
+
     @PostMapping("/verify")
     public ResponseEntity<DecodedJwtDTO> verify(@RequestBody String jwt) throws JWTDecodeException {
         return ResponseEntity.status(200).body(new DecodedJwtDTO(JwtUtil.isValidJWT(jwt)));

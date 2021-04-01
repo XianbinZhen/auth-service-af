@@ -14,4 +14,6 @@ public interface UserRepo extends CrudRepository<User, Integer> {
     User findByEmail(String email);
 
     Set<User> findAllByStatus(String status);
+
+    Set<User> findAllByRole(String role);
 }
