@@ -1,8 +1,11 @@
 package com.revature.auth.controllers;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.revature.auth.aspects.Authorized;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.revature.auth.dtos.DecodedJwtDTO;
+import com.revature.auth.dtos.UserDTO;
 import com.revature.auth.entities.User;
 import com.revature.auth.services.UserService;
 import com.revature.auth.utils.JwtUtil;
@@ -14,11 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.Set;
 
-// TODO Annotation & Aspect for security need to be created, implemented, & added to the appropriate controllers.
-// TODO AuthorizationController mappings need to be created & implemented.
+
 @Component
 @RestController
-@CrossOrigin
+//@CrossOrigin
 public class AuthorizationController {
 //    `POST /register`
 //     - `GET /resolve` <-- admin views registration requests to resolve//pending users
@@ -31,45 +33,47 @@ public class AuthorizationController {
 
 //    @Authorized
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user){
-        user = userService.register(user);
-        return ResponseEntity.status(201).body(user);
+    public ResponseEntity<UserDTO> registerUser(@RequestBody User user){
+        UserDTO userDTO = new UserDTO(userService.register(user));
+        return ResponseEntity.status(201).body(userDTO);
     }
     @GetMapping("/resolve")
-    public ResponseEntity<Set<User>> getPendingUsers(){
+    public ResponseEntity<Set<UserDTO>> getPendingUsers(){
+        Set<UserDTO> userDTOS = new HashSet<>();
         Set<User> users = userService.getUsersByStatus("pending");
-        return ResponseEntity.status(200).body(users);
+        for (User u : users) {
+            userDTOS.add(new UserDTO(u));
+        }
+        return ResponseEntity.status(200).body(userDTOS);
     }
     @PatchMapping("/resolve/{userId}")
-    public ResponseEntity<User> updateStatusById(@RequestBody User user,@PathVariable int userId){
+    public ResponseEntity<UserDTO> updateStatusById(@RequestBody User user,@PathVariable int userId){
         String status = user.getStatus();
         switch (status){
             case "denied":
-                return ResponseEntity.status(200).body(userService.denyUserById(userId));
+                return ResponseEntity.status(200).body(new UserDTO(userService.denyUserById(userId)));
             case "approved":
-                return ResponseEntity.status(200).body(userService.approveUserById(userId));
+                return ResponseEntity.status(200).body(new UserDTO(userService.approveUserById(userId)));
             default:
                 throw new IllegalArgumentException("status not found");
         }
     }
     @PatchMapping("/password")
-    public ResponseEntity<User> setPassword(@RequestBody User user){
-        User updatedUser = userService.setPassword(user,user.getPassword());
-        return ResponseEntity.status(200).body(updatedUser);
+    public ResponseEntity<UserDTO> setPassword(@RequestBody User user){
+        return ResponseEntity.status(200).body(new UserDTO(userService.setPassword(user,user.getPassword())));
     }
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User user){
-        user = userService.findUserByUsernameAndPassword(user.getEmail(),user.getPassword());
         if(!(user==null)){
-            String jwt = JwtUtil.generate(user.getEmail(),user.getRole(), user.getUserId());
+            UserDTO userDTO = new UserDTO(userService.findUserByUsernameAndPassword(user.getEmail(),user.getPassword()));
+            String jwt = JwtUtil.generate(userDTO.getEmail(),userDTO.getRole(), userDTO.getUserId());
             return ResponseEntity.status(200).body(jwt);
         }
         return ResponseEntity.status(403).body("incorrect credentials");
     }
     @PostMapping("/verify")
-    public ResponseEntity<Boolean> verify(@RequestBody String jwt) throws JWTDecodeException {
-        JwtUtil.isValidJWT(jwt);
-        return ResponseEntity.status(200).body(true);
+    public ResponseEntity<DecodedJwtDTO> verify(@RequestBody String jwt) throws JWTDecodeException {
+        return ResponseEntity.status(200).body(new DecodedJwtDTO(JwtUtil.isValidJWT(jwt)));
     }
 
 }

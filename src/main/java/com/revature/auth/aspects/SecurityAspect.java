@@ -31,7 +31,6 @@ public class SecurityAspect {
     public Object authenticate(ProceedingJoinPoint pjp) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         String auth = request.getHeader("Authorization");
-        System.out.println(auth);
         if (auth == null){
             logger.error("Admin not logged in to perform action.");
             throw new UnauthorizedException("Please check if logged in.");
@@ -40,7 +39,6 @@ public class SecurityAspect {
         String auth_admin = JwtUtil.isValidJWT(auth).getClaim("role").toString();
         auth_admin = auth_admin.replace("\"", "");
 
-        System.out.println(auth_admin);
 
         if (auth_admin == "admin"){
             Object obj = pjp.proceed();
