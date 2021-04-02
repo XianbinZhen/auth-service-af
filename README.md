@@ -5,10 +5,10 @@ Microservice responsible for authenticating jwts and for the creation of new use
 Need to add a `.env` file in this directory or set in you system environment variables if being done locally.
 It should include: 
 `
-AF_SECRET=[INSERT YOUR OWN SECRET HERE]
-AF_EMAIL_SECRET=[PASSWORD FOR THE EMAIL TO BE USED]
-AssignForceAuth=[DATABASE URL HERE]
-AssignForceSalt=[YOUR KEY WORD HERE FOR PASSWORD HASHING]
+- AF_SECRET=[INSERT YOUR OWN SECRET HERE]
+- AF_EMAIL_SECRET=[PASSWORD FOR THE EMAIL TO BE USED]
+- AssignForceAuth=[DATABASE URL HERE]
+- AssignForceSalt=[YOUR KEY WORD HERE FOR PASSWORD HASHING]
 `
 ## Routes, Requests, and Responses
 ### User Registration
