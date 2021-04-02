@@ -1,6 +1,7 @@
 package com.revature.auth.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
@@ -16,7 +17,7 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    //@JsonIgnore
+    @JsonIgnore
     @Column(name = "pswrd")
     private String password;
 

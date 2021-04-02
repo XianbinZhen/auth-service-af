@@ -8,6 +8,8 @@ public interface UserService {
 
     public User register(User user);
     public Set<User> getUsersByStatus(String status);
+    public Set<User> getUsersByRole(String role);
+    public User getUserById(int userId);
 
     public User approveUser(User user);
     public User approveUserById(int userId);

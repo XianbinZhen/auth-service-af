@@ -31,6 +31,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public Set<User> getUsersByRole(String role) {
+            return userRepo.findAllByRole(role);
+    }
+
+    @Override
+    public User getUserById(int userId) {
+        return userRepo.findById(userId).get();
+    }
+
+
+    @Override
     public User approveUser(User user) {
         Optional<User> op = userRepo.findById(user.getUserId());
         if (op.isPresent()) {
@@ -85,7 +96,6 @@ public class UserServiceImpl implements UserService{
 
         User user1 = op.get();
         user1.setPassword(HashUtil.hash(password));
-
         userRepo.save(user1);
         return user1;
     }
@@ -95,7 +105,7 @@ public class UserServiceImpl implements UserService{
         Optional<User> op = userRepo.findById(userId);
         if (op.isPresent()) {
             User user1 = op.get();
-            user1.setPassword(password);
+            user1.setPassword(HashUtil.hash(password));
             userRepo.save(user1);
             return user1;
         }
