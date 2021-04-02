@@ -5,6 +5,7 @@ import com.revature.auth.aspects.Authorized;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.revature.auth.dtos.DecodedJwtDTO;
+import com.revature.auth.dtos.JwtDTO;
 import com.revature.auth.dtos.UserDTO;
 import com.revature.auth.entities.User;
 import com.revature.auth.services.UserService;
@@ -22,7 +23,7 @@ import java.util.Set;
 
 @Component
 @RestController
-//@CrossOrigin
+@CrossOrigin
 public class AuthorizationController {
 //    `POST /register`
 //     - `GET /resolve` <-- admin views registration requests to resolve//pending users
@@ -73,13 +74,15 @@ public class AuthorizationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user){
-        if(!(user==null)){
-            UserDTO userDTO = new UserDTO(userService.findUserByUsernameAndPassword(user.getEmail(),user.getPassword()));
-            String jwt = JwtUtil.generate(userDTO.getEmail(),userDTO.getRole(), userDTO.getUserId());
+    public ResponseEntity<JwtDTO> login(@RequestBody UserDTO userDTO){
+        System.out.println(userDTO);
+        if(!(userDTO==null)){
+            userDTO = new UserDTO(userService.findUserByUsernameAndPassword(userDTO.getEmail(), userDTO.getPassword()));
+            String jwtData = JwtUtil.generate(userDTO.getEmail(),userDTO.getRole(), userDTO.getUserId());
+            JwtDTO jwt = new JwtDTO(jwtData);
             return ResponseEntity.status(200).body(jwt);
         }
-        return ResponseEntity.status(403).body("incorrect credentials");
+        throw new IllegalArgumentException("Invalid username and password provided.");
     }
 
     @PostMapping("/verify")
