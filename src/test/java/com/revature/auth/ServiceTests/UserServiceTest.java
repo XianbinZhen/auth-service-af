@@ -90,7 +90,7 @@ public class UserServiceTest {
         Mockito.when(userRepo.findById(any())).thenReturn(java.util.Optional.of(user1));
         Mockito.when(userRepo.save(any())).thenReturn(user1);
 
-        userService.approveUser(user1);
+        userService.approveUser(user1, "testpassword");
 
         System.out.println(user1);
         Assertions.assertEquals("approved", user1.getStatus());
@@ -102,7 +102,7 @@ public class UserServiceTest {
         User user1 = new User(1, "test1@gmail.com", "password", "pending", "ADMIN");
         Mockito.when(userRepo.findById(any())).thenReturn(java.util.Optional.of(user1));
         Mockito.when(userRepo.save(any())).thenReturn(user1);
-        System.out.println(userService.approveUserById(1));
+        System.out.println(userService.approveUserById(1, "testpassword"));
         Assertions.assertEquals("approved", user1.getStatus());
     }
 
