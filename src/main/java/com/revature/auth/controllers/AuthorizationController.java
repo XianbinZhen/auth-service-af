@@ -90,4 +90,9 @@ public class AuthorizationController {
         return ResponseEntity.status(200).body(new DecodedJwtDTO(JwtUtil.isValidJWT(jwt)));
     }
 
+    @GetMapping("/health")
+    public boolean health() {
+        return true;
+    }
+
 }
