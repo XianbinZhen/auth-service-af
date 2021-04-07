@@ -25,7 +25,7 @@ public class User {
     private String status;
 
     //ENUMS, Maybe?
-    @Column(name = "role")
+    @Column(name = "\"role\"")
     private String role;
 
     public User(int userId, String email, String password, String status, String role) {
