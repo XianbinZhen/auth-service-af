@@ -6,17 +6,17 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
-  config:
-    import:
-  cloud:
-    consul:
-      config:
-        enabled: false
-      discovery:
-        instanceId: ${spring.application.name}
-        healthCheckPath: /health
-        health-check-interval: 120s
-        service-name: ${spring.application.name}
+#  config:
+#    import: bootstrap.yaml
+#  cloud:
+#    consul:
+#      config:
+#        enabled: false
+#      discovery:
+#        instanceId: ${spring.application.name}
+#        healthCheckPath: /health
+#        health-check-interval: 5s
+#        service-name: ${spring.application.name}
 server:
   port: 8080
 

@@ -1,0 +1,7 @@
+#spring:
+#  application:
+#    name: auth-service
+#  cloud:
+#    consul:
+#      host: 34.72.59.6
+#      port: 8500
