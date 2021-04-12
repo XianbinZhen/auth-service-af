@@ -70,7 +70,10 @@ public class AuthorizationController {
                 String jwt = JwtUtil.generate(user.getEmail(), user.getRole(), user.getUserId(), user.getStatus());
                 EmailUtil.notifyUser(userDTO, "https://assignforce.revature.com/password?id="+jwt);
                 userDTO.setPassword(null);
-                return ResponseEntity.status(200).body(new UserDTO(userService.approveUserById(userId, pass)));
+
+                UserDTO approvedUserDTO = new UserDTO(userService.approveUser(user, userDTO.getPassword()));
+
+                return ResponseEntity.status(200).body(approvedUserDTO);
             default:
                 throw new IllegalArgumentException("status not found");
         }
