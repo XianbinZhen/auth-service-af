@@ -122,6 +122,10 @@ public class UserServiceImpl implements UserService{
     public User findUserByUsernameAndPassword(String username, String password) {
 //        Optional<User> op = userRepo.findByEmail(username);
         User user = userRepo.findByEmail(username);
+        if(user == null) return null;
+        if(user.getStatus().equals("pending_approval") || user.getStatus().equals("denied")) {
+            return null;
+        }
         if (HashUtil.hash(password).equals(user.getPassword())) {
             return user;
         }

@@ -8,6 +8,7 @@ import com.revature.auth.dtos.DecodedJwtDTO;
 import com.revature.auth.dtos.JwtDTO;
 import com.revature.auth.dtos.UserDTO;
 import com.revature.auth.entities.User;
+import com.revature.auth.exceptions.UnauthorizedException;
 import com.revature.auth.services.UserService;
 import com.revature.auth.utils.DtoUtil;
 import com.revature.auth.utils.EmailUtil;
@@ -78,7 +79,10 @@ public class AuthorizationController {
     }
 
     @PatchMapping("/password")
-    public ResponseEntity<JwtDTO> setPassword(@RequestBody User user){
+    public ResponseEntity<JwtDTO> setPassword(@RequestBody User user, @RequestParam(name = "id", required = true) String jwtTemp){
+        DecodedJWT decode = JwtUtil.isValidJWT(jwtTemp);
+        user.setEmail(decode.getClaim("email").asString());
+        
         UserDTO userDTO = new UserDTO(user);
         userService.setPassword(user, user.getPassword());
         String jwt = JwtUtil.generate(userDTO.getEmail(), userDTO.getRole(), userDTO.getUserId(), userDTO.getStatus());
@@ -87,9 +91,12 @@ public class AuthorizationController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtDTO> login(@RequestBody UserDTO userDTO){
-        System.out.println(userDTO);
         if(!(userDTO==null)){
-            userDTO = new UserDTO(userService.findUserByUsernameAndPassword(userDTO.getEmail(), userDTO.getPassword()));
+            User userCheck = userService.findUserByUsernameAndPassword(userDTO.getEmail(), userDTO.getPassword());
+            if(userCheck == null) {
+                throw new UnauthorizedException("Login failed");
+            }
+            userDTO = new UserDTO(userCheck);
             String jwtData = JwtUtil.generate(userDTO.getEmail(),userDTO.getRole(), userDTO.getUserId(), userDTO.getStatus());
             JwtDTO jwt = new JwtDTO(jwtData);
             return ResponseEntity.status(200).body(jwt);
