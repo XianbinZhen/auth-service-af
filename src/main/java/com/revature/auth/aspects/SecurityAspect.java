@@ -39,7 +39,6 @@ public class SecurityAspect {
         String auth_admin = JwtUtil.isValidJWT(auth).getClaim("role").toString();
         auth_admin = auth_admin.replace("\"", "");
 
-        System.out.println(auth_admin);
         if (auth_admin.equals("admin")){
             Object obj = pjp.proceed();
             return obj;
