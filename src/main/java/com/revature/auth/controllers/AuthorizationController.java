@@ -48,7 +48,7 @@ public class AuthorizationController {
     @Authorized
     @GetMapping("/resolve")
     public ResponseEntity<Set<UserDTO>> getPendingUsers(){
-        Set<UserDTO> userDTOS = DtoUtil.usersToDTOs(userService.getUsersByStatus("pending"));
+        Set<UserDTO> userDTOS = DtoUtil.usersToDTOs(userService.getUsersByStatus("pending_approval"));
         for (UserDTO user : userDTOS) {
             user.setPassword(null);
         }
@@ -69,8 +69,9 @@ public class AuthorizationController {
             case "approved":
                 String jwt = JwtUtil.generate(user.getEmail(), user.getRole(), user.getUserId(), user.getStatus());
                 EmailUtil.notifyUser(userDTO, "https://assignforce.revature.com/password?id="+jwt);
-                userDTO.setPassword(null);
-                return ResponseEntity.status(200).body(new UserDTO(userService.approveUserById(userId, pass)));
+                UserDTO approvedUserDTO = new UserDTO(userService.approveUser(user, userDTO.getPassword()));
+                approvedUserDTO.setPassword(null);
+                return ResponseEntity.status(200).body(approvedUserDTO);
             default:
                 throw new IllegalArgumentException("status not found");
         }

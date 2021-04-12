@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService{
             User userCheck = op.get();
             userCheck.setStatus("pending_creation");
             userCheck.setPassword(HashUtil.hash(pass));
+            userCheck.setRole(user.getRole());
             userRepo.save(userCheck);
             return userCheck;
         }
