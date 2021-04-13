@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService{
             userCheck.setStatus("pending_creation");
             // Hashes the user given password and sets that as the user's password
             userCheck.setPassword(HashUtil.hash(pass));
+            userCheck.setRole(user.getRole());
             userRepo.save(userCheck);
             return userCheck;
         }
@@ -128,6 +129,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public User findUserByUsernameAndPassword(String username, String password) {
         User user = userRepo.findByEmail(username);
+        if(user == null) return null;
+        if(user.getStatus().equals("pending_approval") || user.getStatus().equals("denied")) {
+            return null;
+        }
         if (HashUtil.hash(password).equals(user.getPassword())) {
             return user;
         }
