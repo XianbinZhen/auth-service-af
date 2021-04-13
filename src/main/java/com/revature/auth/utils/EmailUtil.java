@@ -51,8 +51,6 @@ public class EmailUtil {
     }
 
     public static boolean notifyAdmins(Set<UserDTO> admins){
-        System.out.println(email);
-        System.out.println(password);
 
         Properties properties = new Properties();
         properties.put("mail.transport.protocol", "smtp");
