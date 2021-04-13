@@ -68,8 +68,7 @@ public class AuthorizationController {
                 userDTO.setPassword(null);
                 return ResponseEntity.status(200).body(new UserDTO(userService.denyUserById(userId)));
             case "approved":
-                String jwt = JwtUtil.generate(user.getEmail(), user.getRole(), user.getUserId(), user.getStatus());
-                EmailUtil.notifyUser(userDTO, "https://assignforce.revature.com/password?id="+jwt);
+                EmailUtil.notifyUser(userDTO, "https://ngassignforce.web.app/signin");
                 UserDTO approvedUserDTO = new UserDTO(userService.approveUser(user, userDTO.getPassword()));
                 approvedUserDTO.setPassword(null);
                 return ResponseEntity.status(200).body(approvedUserDTO);
@@ -91,7 +90,7 @@ public class AuthorizationController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtDTO> login(@RequestBody UserDTO userDTO){
-        if(!(userDTO==null)){
+        if(userDTO!=null){
             User userCheck = userService.findUserByUsernameAndPassword(userDTO.getEmail(), userDTO.getPassword());
             if(userCheck == null) {
                 throw new UnauthorizedException("Login failed");
