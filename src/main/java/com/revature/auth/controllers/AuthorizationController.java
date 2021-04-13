@@ -78,7 +78,7 @@ public class AuthorizationController {
     }
 
     @PatchMapping("/password")
-    public ResponseEntity<JwtDTO> setPassword(@RequestBody User user, @RequestParam(name = "id", required = true) String jwtTemp){
+    public ResponseEntity<JwtDTO> setPassword(@RequestBody User user, @RequestHeader(name = "Authorization", required = true) String jwtTemp){
         DecodedJWT decode = JwtUtil.isValidJWT(jwtTemp);
         user.setEmail(decode.getClaim("email").asString());
         
