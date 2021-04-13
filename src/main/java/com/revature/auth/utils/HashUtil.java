@@ -4,6 +4,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class HashUtil {
+
+    // Method to hash password
     public static String hash(String text) {
         String salt = System.getenv("AssignForceSalt");
         String salted_text = salt.concat(text);
