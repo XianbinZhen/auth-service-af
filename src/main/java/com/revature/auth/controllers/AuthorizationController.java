@@ -1,6 +1,7 @@
 package com.revature.auth.controllers;
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.revature.auth.aspects.Authorized;
 import com.revature.auth.dtos.DecodedJwtDTO;
 import com.revature.auth.dtos.JwtDTO;
@@ -25,11 +26,6 @@ import java.util.Set;
 @CrossOrigin
 public class AuthorizationController {
 
-
-
-
-
-//            - `POST /verify` <-- internal use only, called by our other services (returns a boolean with whether a JWT is valid or not)
     @Autowired
     UserService userService;
 
