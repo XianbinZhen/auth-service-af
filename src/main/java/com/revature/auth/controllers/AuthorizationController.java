@@ -68,7 +68,7 @@ public class AuthorizationController {
                 userDTO.setPassword(null);
                 return ResponseEntity.status(200).body(new UserDTO(userService.denyUserById(userId)));
             case "approved":
-                EmailUtil.notifyUser(userDTO, "https://ngassignforce.web.app/signin");
+                EmailUtil.notifyUser(userDTO, "https://training-team-253916.web.app/signin");
                 UserDTO approvedUserDTO = new UserDTO(userService.approveUser(user, userDTO.getPassword()));
                 approvedUserDTO.setPassword(null);
                 return ResponseEntity.status(200).body(approvedUserDTO);
