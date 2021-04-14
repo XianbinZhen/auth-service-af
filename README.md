@@ -56,7 +56,7 @@ Expected body:
   "userId":id,
   "email":"email",
   "status":"status",
-  "role": "role"}
+  "role": "role"
 }
 ```
 This route will change the user's status accordingly.
