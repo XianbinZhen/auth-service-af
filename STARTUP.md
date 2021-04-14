@@ -29,11 +29,10 @@ The main branch of *af-auth-service* located [here](https://github.com/Batch-944
 - Then navigate to the libs folder `./af-auth-service/build/libs`
 - Then run the jar file using `java -jar [filename]`
 
-# Running the Project Using Docker (W.I.P.) 
+# Running the Project Using Docker
 
 ### Prequisites
 > Docker
->
 
 ## Runhning the Project
 - `docker build -t auth-service-image`
