@@ -17,7 +17,8 @@ uri: `/register`
 Expected body:
 ```json
 {
-  "email": "email"
+  "email": "email",
+  "role": "admin | trainer"
 }
 ```
 This route creates a new user in the database with the status of "pending" from the request body.
