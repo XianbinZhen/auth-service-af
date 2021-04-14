@@ -11,7 +11,7 @@ public class RandomUtil{
     public static final String alphanum = upper + lower + digits;
 
 
-
+    // This generate function is used to generate a random password for new created user.
     public static String generate(int size) {
 
         StringBuilder builder = new StringBuilder();

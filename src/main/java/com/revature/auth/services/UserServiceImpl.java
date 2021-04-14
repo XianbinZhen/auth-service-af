@@ -45,9 +45,12 @@ public class UserServiceImpl implements UserService{
     @Override
     public User approveUser(User user, String pass) {
         Optional<User> op = userRepo.findById(user.getUserId());
+        // Checks if the user exists in the database
         if (op.isPresent()) {
             User userCheck = op.get();
+            // On approval status is changed from "pending_approval" to "pending_creation"
             userCheck.setStatus("pending_creation");
+            // Hashes the user given password and sets that as the user's password
             userCheck.setPassword(HashUtil.hash(pass));
             userCheck.setRole(user.getRole());
             userRepo.save(userCheck);
@@ -56,6 +59,7 @@ public class UserServiceImpl implements UserService{
         return null;
     }
 
+    // Same as approveUser, but uses the userId instead of a user object
     @Override
     public User approveUserById(int userId, String pass) {
         Optional<User> op = userRepo.findById(userId);
@@ -74,6 +78,7 @@ public class UserServiceImpl implements UserService{
         Optional<User> op = userRepo.findById(user.getUserId());
         if (op.isPresent()) {
             User userCheck = op.get();
+            // On denial status is changed from "pending_approval" to "denied"
             userCheck.setStatus("denied");
             userRepo.save(userCheck);
             return userCheck;
@@ -81,6 +86,7 @@ public class UserServiceImpl implements UserService{
         return null;
     }
 
+    // Same as denyUser, but uses the userId instead of a user object
     @Override
     public User denyUserById(int userId) {
         Optional<User> op = userRepo.findById(userId);
@@ -99,6 +105,7 @@ public class UserServiceImpl implements UserService{
         if (!op.isPresent()) throw new IllegalArgumentException("user not found");
 
         User user1 = op.get();
+        // Hashes and persists the given password
         user1.setPassword(HashUtil.hash(password));
         user1.setStatus("created");
         userRepo.save(user1);
@@ -110,6 +117,7 @@ public class UserServiceImpl implements UserService{
         Optional<User> op = userRepo.findById(userId);
         if (op.isPresent()) {
             User user1 = op.get();
+            // Hashes and persists the given password
             user1.setPassword(HashUtil.hash(password));
             user1.setStatus("created");
             userRepo.save(user1);
@@ -120,7 +128,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User findUserByUsernameAndPassword(String username, String password) {
-//        Optional<User> op = userRepo.findByEmail(username);
         User user = userRepo.findByEmail(username);
         if(user == null) return null;
         if(user.getStatus().equals("pending_approval") || user.getStatus().equals("denied")) {

@@ -17,6 +17,7 @@ public class EmailUtil {
     private static String password = System.getenv("AF_EMAIL_SECRET");
     private static String server = "smtp.gmail.com";
 
+    // A method to email the newly approved user their temporary password.
     public static boolean notifyUser(UserDTO userDTO, String url){
 
         Properties properties = new Properties();
@@ -50,6 +51,7 @@ public class EmailUtil {
         }
     }
 
+    // A method to email admins that a new user has been registered and is pending verification.
     public static boolean notifyAdmins(Set<UserDTO> admins){
 
         Properties properties = new Properties();

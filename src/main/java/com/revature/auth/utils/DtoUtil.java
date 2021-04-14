@@ -12,6 +12,7 @@ public class DtoUtil {
         return new UserDTO(user);
     }
 
+    // A method for making userDtos from user objects
     public static Set<UserDTO> usersToDTOs(Set<User> users){
         Set<UserDTO> userDTOs = new HashSet<>();
         for (User user : users){
