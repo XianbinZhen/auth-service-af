@@ -11,7 +11,7 @@ It should include:
 - AssignForceSalt=[YOUR KEY WORD HERE FOR PASSWORD HASHING]
 `
 ## Routes, Requests, and Responses
-### User Registration
+### User Registration (POST)
 uri: `/register`
 
 Expected body:
@@ -31,7 +31,7 @@ Returns a JSON with a user in the format of:
     "role": "role"
 }
 ```
-### Resolve
+### Resolve (GET)
 uri: `/resolve`
 
 This route will retrive all users with the status of "pending".
@@ -46,7 +46,7 @@ Returns a JSON with a set of users in the format of:
 }
 ```
 
-### Approve/Deny
+### Approve/Deny (PATCH)
 uri: `/resolve/{userId}`
 
 Expected body:
@@ -69,7 +69,7 @@ Returns a user JSON in the format of:
     "role": "role"
 }
 ```
-### Set password
+### Set password (PATCH)
 uri: `/password`
 
 Expected body:
@@ -91,7 +91,7 @@ Returns a user JSON in the format of:
     "role": "role"
 }
 ```
-### Login
+### Login (POST)
 uri: `/login`
 
 Expected body:
@@ -104,7 +104,7 @@ Expected body:
 This route will return a JWT if the email and password are correct.
 Returns a JWT in the form of a string.
 
-### Verify
+### Verify (POST)
 uri: `/verify`
 
 A JWT string is expected in the body.
