@@ -124,3 +124,6 @@ Returns a user JSON in the format of:
 - [Aristotle](https://github.com/StotTot)
 - [Lcarrico](https://github.com/Lcarrico)
 - [Dhurba](https://github.com/dhurba212)
+
+## Springdoc openAPI
+https://auth-service-user.herokuapp.com/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
